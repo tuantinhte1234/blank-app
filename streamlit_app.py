@@ -91,7 +91,8 @@ selected_session = st.selectbox("Select a session for more details:", df["Conten
 
 # Display session details
 st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px;'>", unsafe_allow_html=True)
-st.markdown("Session Details", unsafe_allow_html=True)
+st.markdown("<span style='color: black;'>Session Details</span>", unsafe_allow_html=True)
+
 session_info = df[df["Content"] == selected_session].iloc[0]
 
 st.write(f"<span style='color: black;'>Time: {session_info['Time']}</span>", unsafe_allow_html=True)
