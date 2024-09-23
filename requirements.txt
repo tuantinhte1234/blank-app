@@ -1,5 +1,4 @@
-streamlit
-Pillow
-pandas
-qrcode
-list
+streamlit==1.22.0
+pandas==1.5.3
+Pillow==9.5.0
+qrcode==7.4.2
