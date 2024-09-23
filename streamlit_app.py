@@ -71,9 +71,18 @@ data = {
 }
 df = pd.DataFrame(data)
 
-# Display agenda
+# Hiển thị bảng lịch trình chi tiết với đường kẻ màu đen
 st.subheader("Detailed Agenda")
-st.table(df.style.set_properties(**{'background-color': 'white', 'color': '#2C3E50'}))
+st.table(df.style.set_properties(**{'background-color': 'white', 'color': '#2C3E50'})
+          .set_table_attributes('style="border: 1px solid black;"')
+          .set_table_styles([{
+              'selector': 'th',
+              'props': [('border', '1px solid black')]
+          }, {
+              'selector': 'td',
+              'props': [('border', '1px solid black')]
+          }]))
+
 
 # Session information
 st.subheader("Session Information")
