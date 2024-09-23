@@ -45,7 +45,7 @@ st.markdown("""
         background-color: #ffffff;
     }
     h1, h2, h3 {
-        color: #2C3E50;
+        color: #0D0D0D;
     }
     .speaker {
         font-weight: bold;
