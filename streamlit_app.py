@@ -66,7 +66,6 @@ st.title("Problem-Solving Skills for Learning Challenges")
 
 # Create DataFrame for agenda
 data = {
-    "No": [1, 2, 3, 4, 5, 6],  # Cột số thứ tự
     "Content": ["Welcome", "Introduction to Problem-Solving", "How to improve your problem-solving skills", "Mini game", "Group practice", "Conclusion and Q&A"],
     "Time": ["1:15 PM", "1:20 PM", "1:50 PM", "2:20 PM", "2:40 PM", "3:00 PM"],
     "Speaker": ["Ms. Hoa", "Ms. Hoa", "Ms. Hoa", "Ms. Hien", "Ms. Hien", "Ms. Hien"]
