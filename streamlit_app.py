@@ -8,10 +8,11 @@ st.set_page_config(page_title="Event Agenda", page_icon="📅", layout="wide")
 st.markdown("""
 <style>
     body {
-        background-color: #f0f8ff;  /* Light blue background */
+        color: #1E1E1E;
+        background-color: #f0f8ff;
     }
     .stApp {
-        background: linear-gradient(135deg, #f0f8ff 25%, #e6f3ff 25%, #e6f3ff 50%, #f0f8ff 50%, #f0f8ff 75%, #e6f3ff 75%, #e6f3ff 100%);
+        background: linear-gradient(135deg, #e6f3ff 25%, #d9ecff 25%, #d9ecff 50%, #e6f3ff 50%, #e6f3ff 75%, #d9ecff 75%, #d9ecff 100%);
         background-size: 40px 40px;
         animation: move 4s linear infinite;
     }
@@ -30,6 +31,13 @@ st.markdown("""
         padding: 10px;
         border-radius: 5px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1, h2, h3 {
+        color: #2C3E50;
+    }
+    .speaker {
+        font-weight: bold;
+        color: #3498DB;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -57,7 +65,7 @@ selected_session = st.selectbox("Select a session for more details:", df["Conten
 st.write("**Session Details**")
 session_info = df[df["Content"] == selected_session].iloc[0]
 st.write(f"Time: {session_info['Time']}")
-st.write(f"Speaker: {session_info['Speaker']}")
+st.markdown(f"Speaker: <span class='speaker'>{session_info['Speaker']}</span>", unsafe_allow_html=True)
 
 # Session descriptions
 descriptions = {
