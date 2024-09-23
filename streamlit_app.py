@@ -74,7 +74,8 @@ df = pd.DataFrame(data)
 
 # Display agenda
 st.subheader("Detailed Agenda")
-st.table(df.style.set_properties(**{'background-color': 'white', 'color': 'black'})
+st.table(df.style
+          .set_properties(**{'background-color': 'white', 'color': 'black', 'text-align': 'center'})
           .set_table_attributes('style="border: 1px solid black;"')
           .set_table_styles([{
               'selector': 'th',
@@ -83,7 +84,6 @@ st.table(df.style.set_properties(**{'background-color': 'white', 'color': 'black
               'selector': 'td',
               'props': [('border', '1px solid black'), ('color', 'black'), ('text-align', 'center')]
           }]))
-
 
 # Session information
 st.subheader("Session Information")
