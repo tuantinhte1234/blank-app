@@ -90,11 +90,12 @@ st.subheader("Session Information")
 selected_session = st.selectbox("Select a session for more details:", df["Content"])
 
 # Display session details
-st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px; color: #2C3E50;'>", unsafe_allow_html=True)
+st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px; color: black;'>", unsafe_allow_html=True)
 st.write("**Session Details**")
 session_info = df[df["Content"] == selected_session].iloc[0]
 st.write(f"Time: {session_info['Time']}")
-st.markdown(f"Speaker: <span class='speaker'>{session_info['Speaker']}</span>", unsafe_allow_html=True)
+st.markdown(f"Speaker: <span class='speaker' style='color: black;'>{session_info['Speaker']}</span>", unsafe_allow_html=True)
+
 
 # Session descriptions
 descriptions = {
