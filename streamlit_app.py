@@ -90,13 +90,12 @@ st.subheader("Session Information")
 selected_session = st.selectbox("Select a session for more details:", df["Content"])
 
 # Display session details
-st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px; color: #2C3E50;'>", unsafe_allow_html=True)
-st.markdown("Session Details")
+st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px;'>", unsafe_allow_html=True)
+st.markdown("Session Details", unsafe_allow_html=True)
 session_info = df[df["Content"] == selected_session].iloc[0]
-st.write(f"Time: {session_info['Time']}")
-st.markdown(f"Speaker: <span class='speaker'>{session_info['Speaker']}</span>", unsafe_allow_html=True)
 
-
+st.write(f"<span style='color: black;'>Time: {session_info['Time']}</span>", unsafe_allow_html=True)
+st.markdown(f"<span style='color: black;'>Speaker: <span class='speaker'>{session_info['Speaker']}</span></span>", unsafe_allow_html=True)
 
 # Session descriptions
 descriptions = {
@@ -107,7 +106,7 @@ descriptions = {
     "Group practice": "Collaborative session where participants work together on problem-solving challenges.",
     "Conclusion and Q&A": "Wrap-up of key takeaways and opportunity for participants to ask questions."
 }
-st.write("**Description:**", descriptions.get(selected_session, "No description available."))
+st.write("<span style='color: black;'>Description: {}</span>".format(descriptions.get(selected_session, "No description available.")), unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
