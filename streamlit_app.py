@@ -8,7 +8,7 @@ st.set_page_config(page_title="Event Agenda", page_icon="📅", layout="wide")
 st.markdown("""
 <style>
     body {
-        color: #2C3E50;
+        color: #000000;
         background-color: #f0f8ff;
     }
     .stApp {
@@ -28,14 +28,14 @@ st.markdown("""
     }
     .stTable {
         background-color: #ffffff;
-        color: #2C3E50;
+        color: #000000;
         padding: 10px;
         border-radius: 5px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     .dataframe {
         background-color: #ffffff;
-        color: #2C3E50;
+        color: #000000;
     }
     .dataframe th {
         background-color: #3498DB;
@@ -45,17 +45,17 @@ st.markdown("""
         background-color: #ffffff;
     }
     h1, h2, h3 {
-        color: #2C3E50;
+        color: #000000;
     }
     .speaker {
         font-weight: bold;
-        color: #3498DB;
+        color: #3498DB; /* Color for speaker */
     }
-    .st-bw {
-        color: #2C3E50;
+    .st-bw, .st-ew {
+        color: #000000;
     }
-    .st-ew {
-        color: #2C3E50;
+    .session-details, .session-details p {
+        color: #000000; /* Set all details to black */
     }
 </style>
 """, unsafe_allow_html=True)
@@ -73,14 +73,14 @@ df = pd.DataFrame(data)
 
 # Display agenda
 st.subheader("Detailed Agenda")
-st.table(df.style.set_properties(**{'background-color': 'white', 'color': '#2C3E50'}))
+st.table(df.style.set_properties(**{'background-color': 'white', 'color': '#000000'}))
 
 # Session information
 st.subheader("Session Information")
 selected_session = st.selectbox("Select a session for more details:", df["Content"])
 
 # Display session details
-st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px; color: #2C3E50;'>", unsafe_allow_html=True)
+st.markdown("<div class='session-details' style='background-color: #ffffff; padding: 10px; border-radius: 5px;'>", unsafe_allow_html=True)
 st.write("**Session Details**")
 session_info = df[df["Content"] == selected_session].iloc[0]
 st.write(f"Time: {session_info['Time']}")
@@ -100,4 +100,4 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
-st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px; color: #2C3E50;'>We hope you enjoy the event! If you have any questions, please don't hesitate to ask.</div>", unsafe_allow_html=True)
+st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px; color: #000000;'>We hope you enjoy the event! If you have any questions, please don't hesitate to ask.</div>", unsafe_allow_html=True)
