@@ -113,4 +113,4 @@ st.markdown("</div>", unsafe_allow_html=True)
 # Footer
 st.markdown("---")
 st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px; color: #2C3E50;'>We hope you enjoy the event! If you have any questions, please don't hesitate to ask.</div>", unsafe_allow_html=True)
-st.markdown("<div style='text-align: center;'><img src='https://img.icons8.com/?size=100&id=uLWV5A9vXIPu&format=png&color=000000' alt='Facebook' width='50' height='50'></div><a href='https://www.facebook.com/btecsocomshcm' target='_blank'>https://www.facebook.com/btecsocomshcm</a></div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align: center;'><a href='https://www.facebook.com/btecsocomshcm' target='_blank'><img src='https://img.icons8.com/?size=100&id=uLWV5A9vXIPu&format=png&color=000000' alt='Facebook' width='50' height='50'></a></div>", unsafe_allow_html=True)
