@@ -78,11 +78,12 @@ st.table(df.style.set_properties(**{'background-color': 'white', 'color': 'black
           .set_table_attributes('style="border: 1px solid black;"')
           .set_table_styles([{
               'selector': 'th',
-              'props': [('border', '1px solid black'), ('color', 'black')]
+              'props': [('border', '1px solid black'), ('color', 'black'), ('text-align', 'center')]
           }, {
               'selector': 'td',
-              'props': [('border', '1px solid black'), ('color', 'black')]
+              'props': [('border', '1px solid black'), ('color', 'black'), ('text-align', 'center')]
           }]))
+
 
 # Session information
 st.subheader("Session Information")
