@@ -39,13 +39,14 @@ st.markdown("""
     }
     .dataframe th {
         background-color: #3498DB;
-        color: white;
+        color: black; /* Đổi màu chữ thành đen */
     }
     .dataframe td {
         background-color: #ffffff;
+        color: black; /* Đổi màu chữ thành đen */
     }
     h1, h2, h3 {
-        color: #0D0D0D;
+        color: #2C3E50;
     }
     .speaker {
         font-weight: bold;
@@ -65,24 +66,24 @@ st.title("Problem-Solving Skills for Learning Challenges")
 
 # Create DataFrame for agenda
 data = {
+    "No": [1, 2, 3, 4, 5, 6],  # Cột số thứ tự
     "Content": ["Welcome", "Introduction to Problem-Solving", "How to improve your problem-solving skills", "Mini game", "Group practice", "Conclusion and Q&A"],
     "Time": ["1:15 PM", "1:20 PM", "1:50 PM", "2:20 PM", "2:40 PM", "3:00 PM"],
     "Speaker": ["Ms. Hoa", "Ms. Hoa", "Ms. Hoa", "Ms. Hien", "Ms. Hien", "Ms. Hien"]
 }
 df = pd.DataFrame(data)
 
-# Hiển thị bảng lịch trình chi tiết với đường kẻ màu đen
+# Display agenda
 st.subheader("Detailed Agenda")
-st.table(df.style.set_properties(**{'background-color': 'white', 'color': '#2C3E50'})
+st.table(df.style.set_properties(**{'background-color': 'white', 'color': 'black'})
           .set_table_attributes('style="border: 1px solid black;"')
           .set_table_styles([{
               'selector': 'th',
-              'props': [('border', '1px solid black')]
+              'props': [('border', '1px solid black'), ('color', 'black')]
           }, {
               'selector': 'td',
-              'props': [('border', '1px solid black')]
+              'props': [('border', '1px solid black'), ('color', 'black')]
           }]))
-
 
 # Session information
 st.subheader("Session Information")
