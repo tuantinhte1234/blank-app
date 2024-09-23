@@ -8,7 +8,7 @@ st.set_page_config(page_title="Event Agenda", page_icon="📅", layout="wide")
 st.markdown("""
 <style>
     body {
-        color: #1E1E1E;
+        color: #2C3E50;
         background-color: #f0f8ff;
     }
     .stApp {
@@ -27,10 +27,22 @@ st.markdown("""
         padding-top: 3.5rem;
     }
     .stTable {
-        background-color: white;
+        background-color: #ffffff;
+        color: #2C3E50;
         padding: 10px;
         border-radius: 5px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .dataframe {
+        background-color: #ffffff;
+        color: #2C3E50;
+    }
+    .dataframe th {
+        background-color: #3498DB;
+        color: white;
+    }
+    .dataframe td {
+        background-color: #ffffff;
     }
     h1, h2, h3 {
         color: #2C3E50;
@@ -38,6 +50,12 @@ st.markdown("""
     .speaker {
         font-weight: bold;
         color: #3498DB;
+    }
+    .st-bw {
+        color: #2C3E50;
+    }
+    .st-ew {
+        color: #2C3E50;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -55,13 +73,14 @@ df = pd.DataFrame(data)
 
 # Display agenda
 st.subheader("Detailed Agenda")
-st.table(df)
+st.table(df.style.set_properties(**{'background-color': 'white', 'color': '#2C3E50'}))
 
 # Session information
 st.subheader("Session Information")
 selected_session = st.selectbox("Select a session for more details:", df["Content"])
 
 # Display session details
+st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px; color: #2C3E50;'>", unsafe_allow_html=True)
 st.write("**Session Details**")
 session_info = df[df["Content"] == selected_session].iloc[0]
 st.write(f"Time: {session_info['Time']}")
@@ -77,7 +96,8 @@ descriptions = {
     "Conclusion and Q&A": "Wrap-up of key takeaways and opportunity for participants to ask questions."
 }
 st.write("**Description:**", descriptions.get(selected_session, "No description available."))
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
-st.write("We hope you enjoy the event! If you have any questions, please don't hesitate to ask.")
+st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px; color: #2C3E50;'>We hope you enjoy the event! If you have any questions, please don't hesitate to ask.</div>", unsafe_allow_html=True)
