@@ -87,15 +87,15 @@ st.table(df.style
 
 # Session information
 st.subheader("Session Information")
-selected_session = st.selectbox("Select a session for more details:", df["Content"])
+st.markdown("<span style='color: black;'>Select a session for more details:</span>", unsafe_allow_html=True)
+selected_session = st.selectbox("", df["Content"])
 
 # Display session details
 st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px;'>", unsafe_allow_html=True)
 st.markdown("<span style='color: black;'>Session Details</span>", unsafe_allow_html=True)
-
 session_info = df[df["Content"] == selected_session].iloc[0]
 
-st.write(f"<span style='color: black;'>Time: {session_info['Time']}</span>", unsafe_allow_html=True)
+st.write("<span style='color: black;'>Time: {}</span>".format(session_info['Time']), unsafe_allow_html=True)
 st.markdown(f"<span style='color: black;'>Speaker: <span class='speaker'>{session_info['Speaker']}</span></span>", unsafe_allow_html=True)
 
 # Session descriptions
@@ -113,3 +113,4 @@ st.markdown("</div>", unsafe_allow_html=True)
 # Footer
 st.markdown("---")
 st.markdown("<div style='background-color: #ffffff; padding: 10px; border-radius: 5px; color: #2C3E50;'>We hope you enjoy the event! If you have any questions, please don't hesitate to ask.</div>", unsafe_allow_html=True)
+st.markdown("<div style='color: black;'>Contact us on Facebook: <a href='https://www.facebook.com/btecsocomshcm' target='_blank'>https://www.facebook.com/btecsocomshcm</a></div>", unsafe_allow_html=True)
