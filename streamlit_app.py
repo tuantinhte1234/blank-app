@@ -46,16 +46,25 @@ st.markdown("""
     }
     h1, h2, h3 {
         color: #000000;
+        text-align: center; /* Center align headings */
     }
     .speaker {
         font-weight: bold;
-        color: #3498DB; /* Color for speaker */
+        color: #3498DB;
     }
     .st-bw, .st-ew {
         color: #000000;
     }
-    .session-details, .session-details p {
-        color: #000000; /* Set all details to black */
+    .session-details {
+        color: #000000;
+        text-align: center; /* Center align content */
+        padding: 10px;
+        border-radius: 10px;
+        border: 2px solid #3498DB; /* Insert style border */
+        background-color: #f9fcff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: auto;
+        width: 80%; /* Center the box with width */
     }
 </style>
 """, unsafe_allow_html=True)
@@ -79,8 +88,8 @@ st.table(df.style.set_properties(**{'background-color': 'white', 'color': '#0000
 st.subheader("Session Information")
 selected_session = st.selectbox("Select a session for more details:", df["Content"])
 
-# Display session details
-st.markdown("<div class='session-details' style='background-color: #ffffff; padding: 10px; border-radius: 5px;'>", unsafe_allow_html=True)
+# Display session details in a centered box with insert style
+st.markdown("<div class='session-details'>", unsafe_allow_html=True)
 st.write("**Session Details**")
 session_info = df[df["Content"] == selected_session].iloc[0]
 st.write(f"Time: {session_info['Time']}")
