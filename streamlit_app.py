@@ -1,8 +1,31 @@
 import streamlit as st
 import pandas as pd
+import qrcode
+from io import BytesIO
 
-# Set page title and favicon
-st.set_page_config(page_title="Event Agenda", page_icon="📅")
+# Set page config for better mobile experience
+st.set_page_config(page_title="Event Agenda", page_icon="📅", layout="wide")
+
+# Custom CSS to improve mobile layout
+st.markdown("""
+<style>
+    .reportview-container .main .block-container {
+        max-width: 1000px;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+    .dataframe {
+        font-size: 12px;
+    }
+    @media (max-width: 600px) {
+        .dataframe {
+            font-size: 10px;
+        }
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Title of the event
 st.title("Problem-Solving Skills for Learning Challenges")
@@ -20,27 +43,44 @@ df = pd.DataFrame(data)
 st.subheader("Detailed Agenda")
 st.table(df)
 
-# Add some interactivity
-st.sidebar.header("Session Information")
-selected_session = st.sidebar.selectbox("Select a session for more details:", df["Content"])
+# Create two columns for layout
+col1, col2 = st.columns([2, 1])
 
-# Display details for the selected session
-st.sidebar.subheader("Session Details")
-session_info = df[df["Content"] == selected_session].iloc[0]
-st.sidebar.write(f"Time: {session_info['Time']}")
-st.sidebar.write(f"Speaker: {session_info['Speaker']}")
+with col1:
+    # Add some interactivity
+    st.subheader("Session Information")
+    selected_session = st.selectbox("Select a session for more details:", df["Content"])
 
-# Add a description for each session (you can customize these)
-descriptions = {
-    "Welcome": "A warm welcome to all participants and brief overview of the event.",
-    "Introduction to Problem-Solving": "An overview of problem-solving techniques and their importance in learning.",
-    "How to improve your problem-solving skills": "Practical strategies and exercises to enhance problem-solving abilities.",
-    "Mini game": "An interactive game to apply problem-solving skills in a fun way.",
-    "Group practice": "Collaborative session where participants work together on problem-solving challenges.",
-    "Conclusion and Q&A": "Wrap-up of key takeaways and opportunity for participants to ask questions."
-}
+    # Display details for the selected session
+    st.write("**Session Details**")
+    session_info = df[df["Content"] == selected_session].iloc[0]
+    st.write(f"Time: {session_info['Time']}")
+    st.write(f"Speaker: {session_info['Speaker']}")
 
-st.sidebar.write("Description:", descriptions.get(selected_session, "No description available."))
+    # Add a description for each session (you can customize these)
+    descriptions = {
+        "Welcome": "A warm welcome to all participants and brief overview of the event.",
+        "Introduction to Problem-Solving": "An overview of problem-solving techniques and their importance in learning.",
+        "How to improve your problem-solving skills": "Practical strategies and exercises to enhance problem-solving abilities.",
+        "Mini game": "An interactive game to apply problem-solving skills in a fun way.",
+        "Group practice": "Collaborative session where participants work together on problem-solving challenges.",
+        "Conclusion and Q&A": "Wrap-up of key takeaways and opportunity for participants to ask questions."
+    }
+
+    st.write("**Description:**", descriptions.get(selected_session, "No description available."))
+
+with col2:
+    # Generate QR code for sharing
+    st.subheader("Share This Agenda")
+    qr = qrcode.QRCode(version=1, box_size=10, border=5)
+    qr.add_data(st.get_page_url())
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    
+    # Convert PIL image to bytes
+    buffered = BytesIO()
+    img.save(buffered, format="PNG")
+    st.image(buffered.getvalue(), caption="Scan this QR code to view on mobile", use_column_width=True)
 
 # Footer
 st.markdown("---")
