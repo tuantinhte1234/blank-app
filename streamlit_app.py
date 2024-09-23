@@ -69,18 +69,7 @@ with col1:
 
     st.write("**Description:**", descriptions.get(selected_session, "No description available."))
 
-with col2:
-    # Generate QR code for sharing
-    st.subheader("Share This Agenda")
-    qr = qrcode.QRCode(version=1, box_size=10, border=5)
-    qr.add_data(st.get_page_url())
-    qr.make(fit=True)
-    img = qr.make_image(fill_color="black", back_color="white")
-    
-    # Convert PIL image to bytes
-    buffered = BytesIO()
-    img.save(buffered, format="PNG")
-    st.image(buffered.getvalue(), caption="Scan this QR code to view on mobile", use_column_width=True)
+
 
 # Footer
 st.markdown("---")
