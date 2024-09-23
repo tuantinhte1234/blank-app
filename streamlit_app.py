@@ -61,8 +61,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Title
-st.title("Problem-Solving Skills for Learning Challenges")
+# Title centered using asterisks for Markdown
+st.markdown("### **Problem-Solving Skills for Learning Challenges**", unsafe_allow_html=True)
+
 
 # Create DataFrame for agenda
 data = {
