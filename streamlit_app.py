@@ -1,25 +1,47 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
-# Đúng đường dẫn RAW của file CSV trên GitHub
+# Đọc dữ liệu từ GitHub
 github_csv_url = "https://raw.githubusercontent.com/David-FPI/blank-app/main/vi.csv"
+df = pd.read_csv(github_csv_url)
 
-st.title("📊 Dữ liệu giao dịch Zupad từ GitHub")
+# Chuyển đổi investmentDate thành datetime
+df["investmentDate"] = pd.to_datetime(df["investmentDate"], errors='coerce')
 
-try:
-    # Đọc dữ liệu từ GitHub
-    df = pd.read_csv(github_csv_url)
+# Chuẩn hóa tên dự án để đảm bảo thống nhất
+df["projectName"] = df["projectName"].str.strip().str.upper()
 
-    # Lọc dữ liệu có projectName là "Zupad"
-    filtered_df = df[df["projectName"].str.lower() == "zupad"]
+# Tiêu đề ứng dụng
+st.title("📊 Phân Tích Đầu Tư Dự Án Crypto")
 
-    # Hiển thị dữ liệu
-    st.write("📊 Dữ liệu giao dịch của Zupad:")
-    st.dataframe(filtered_df)
+# Tổng quan
+st.header("1️⃣ Tổng Quan Về Đầu Tư")
+st.write(f"**Tổng số giao dịch:** {df.shape[0]}")
+st.write(f"**Tổng số tiền đầu tư:** ${df['amountInvested'].sum():,.2f}")
+st.write(f"**Tổng số token nhận được:** {df['tokensReceived'].sum():,.2f}")
 
-    # Cho phép tải xuống dữ liệu sau khi lọc
-    csv = filtered_df.to_csv(index=False).encode("utf-8")
-    st.download_button("📥 Tải xuống dữ liệu", data=csv, file_name="filtered_zupad.csv", mime="text/csv")
+# Biểu đồ phân bổ đầu tư theo dự án
+st.header("2️⃣ Phân Bổ Đầu Tư Theo Dự Án")
+fig1 = px.pie(df, names="projectName", values="amountInvested", title="Tỷ trọng đầu tư theo dự án")
+st.plotly_chart(fig1)
 
-except Exception as e:
-    st.error("🚨 Không thể tải dữ liệu. Kiểm tra lại đường link GitHub hoặc file có đúng định dạng không.")
+# Biểu đồ mối quan hệ giữa amountInvested và tokensReceived
+st.header("3️⃣ Mối Quan Hệ Giữa Số Tiền Đầu Tư Và Token Nhận Được")
+fig2 = px.scatter(df, x="amountInvested", y="tokensReceived", color="projectName", title="Tương quan giữa số tiền đầu tư và số token nhận được")
+st.plotly_chart(fig2)
+
+# Biểu đồ xu hướng đầu tư theo thời gian
+st.header("4️⃣ Xu Hướng Đầu Tư Theo Thời Gian")
+df_time = df.groupby(df["investmentDate"].dt.date)["amountInvested"].sum().reset_index()
+fig3 = px.line(df_time, x="investmentDate", y="amountInvested", title="Xu hướng tổng vốn đầu tư theo thời gian")
+st.plotly_chart(fig3)
+
+# Biểu đồ phân bố số tiền đầu tư theo loại hình đầu tư
+st.header("5️⃣ Phân Tích Rủi Ro & Cơ Hội")
+fig4 = px.box(df, x="investmentType", y="amountInvested", title="Phân phối số tiền đầu tư theo loại hình")
+st.plotly_chart(fig4)
+
+# Cho phép người dùng tải xuống dữ liệu sau khi lọc
+csv = df.to_csv(index=False).encode("utf-8")
+st.download_button("📥 Tải xuống dữ liệu", data=csv, file_name="investment_analysis.csv", mime="text/csv")
