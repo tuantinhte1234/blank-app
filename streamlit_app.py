@@ -31,7 +31,7 @@ st.markdown(
     **🪙 Tổng số token nhận được:** {total_tokens:,.2f}  
     **📌 Tổng số dự án:** {total_projects}  
     **🔢 Tổng số mã token khác nhau:** {total_project_symbols}  
-    """")
+    """)
 
 st.dataframe(total_summary, use_container_width=True)
 
