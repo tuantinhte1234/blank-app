@@ -9,6 +9,11 @@ df = pd.read_csv(github_csv_url)
 df["amountInvested"] = pd.to_numeric(df["amountInvested"], errors="coerce")
 df["tokensReceived"] = pd.to_numeric(df["tokensReceived"], errors="coerce")
 
+# 🏆 Hiển thị toàn bộ dataset trước
+st.title("📈 Báo Cáo Wallet Address")
+st.write("### 🗂 Dữ Liệu Giao Dịch")
+st.dataframe(df, use_container_width=True)
+
 def display_overview(df):
     st.header("📊 Tổng Quan Đầu Tư")
     
@@ -45,7 +50,14 @@ def search_transactions(df):
     st.write("### 📊 Bảng Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
     st.dataframe(details_by_project, use_container_width=True)
 
-# ✅ Sửa lỗi df_wallet -> df
+# Hiển thị Tổng Quan Đầu Tư và Tìm Kiếm trước
+display_overview(df)
+search_transactions(df)
+
+# 🏆 Chi Tiết Đầu Tư Để Ở DƯỚI CÙNG
+st.markdown("---")
+st.header("🏆 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
+
 if df.empty:
     st.warning("Không có dữ liệu giao dịch.")
     detail_investment_summary = pd.DataFrame(columns=["projectName", "purchaseTokenSymbol", "amountInvested", "tokensReceived"])
@@ -55,11 +67,4 @@ else:
         "tokensReceived": "sum"
     }).reset_index()
 
-st.markdown("### 🏆 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
 st.dataframe(detail_investment_summary, use_container_width=True)
-
-# Hiển thị giao diện
-st.title("📈 Báo Cáo Wallet Address")
-display_overview(df)
-search_transactions(df)
-
