@@ -44,8 +44,8 @@ def search_transactions(df):
     details_by_project = df_filtered.groupby(["purchaseTokenSymbol", "projectName"])["amountInvested"].sum().reset_index()
     st.write("### 📊 Bảng Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
     st.dataframe(details_by_project, use_container_width=True)
-
-if df_wallet.empty:
+    
+if df.empty:
     st.warning("Không có dữ liệu giao dịch cho ví đã chọn.")
     detail_investment_summary = pd.DataFrame(columns=["projectName", "purchaseTokenSymbol", "amountInvested", "tokensReceived"])
 else:
