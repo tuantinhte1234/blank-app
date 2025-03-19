@@ -6,10 +6,8 @@ import plotly.express as px
 github_csv_url = "https://raw.githubusercontent.com/David-FPI/blank-app/main/vi.csv"
 df = pd.read_csv(github_csv_url)
 
-# Chuyển đổi investmentDate thành datetime
+# Chuẩn hóa dữ liệu
 df["investmentDate"] = pd.to_datetime(df["investmentDate"], errors='coerce')
-
-# Chuẩn hóa tên dự án để đảm bảo thống nhất
 df["projectName"] = df["projectName"].str.strip().str.upper()
 
 # Thiết lập giao diện
@@ -17,12 +15,16 @@ st.set_page_config(page_title="Phân Tích Đầu Tư Crypto", layout="wide")
 st.title("💎 Phân Tích Đầu Tư Dự Án Crypto")
 
 # Tổng quan
+total_transactions = df.shape[0]
+total_investment = df['amountInvested'].sum()
+total_tokens = df['tokensReceived'].sum()
+
 st.markdown("## 📌 Tổng Quan Về Đầu Tư")
 st.markdown(
     f"""
-    **📊 Tổng số giao dịch:** {df.shape[0]}  
-    **💰 Tổng số tiền đầu tư:** \${df['amountInvested'].sum():,.2f}  
-    **🪙 Tổng số token nhận được:** {df['tokensReceived'].sum():,.2f}
+    **📊 Tổng số giao dịch:** {total_transactions}  
+    **💰 Tổng số tiền đầu tư:** \${total_investment:,.2f}  
+    **🪙 Tổng số token nhận được:** {total_tokens:,.2f}
     """
 )
 
@@ -50,4 +52,8 @@ st.plotly_chart(fig4, use_container_width=True)
 # Lọc dữ liệu chỉ hiển thị các giao dịch liên quan đến dự án Zupad
 st.markdown("## 🏆 Giao Dịch Liên Quan Đến Dự Án Zupad")
 zupad_df = df[df["projectName"] == "ZUPAD"]
-st.dataframe(zupad_df.style.set_properties(**{"background-color": "#F8F9FA", "border": "1px solid #DEE2E6"}))
+st.dataframe(
+    zupad_df.style.set_properties(
+        **{"background-color": "#FFFFFF", "border": "1px solid #000000", "color": "#000000"}
+    )
+)
