@@ -93,8 +93,31 @@ if selected_wallet != "Tất cả":
     st.markdown("#### 🏦 Thống Kê PurchaseTokenSymbol")
     st.dataframe(purchase_token_stats, use_container_width=True)
 
-    st.markdown("#### 📊 Tổng Hợp Đầu Tư")
-    st.dataframe(purchase_token_stats, use_container_width=True)
+# Thống kê tổng hợp đầu tư theo projectName
+investment_summary = df_wallet.groupby("projectName").agg({
+    "amountInvested": "sum",
+    "tokensReceived": "sum",
+    "projectName": "count"
+}).rename(columns={"projectName": "Số lần đầu tư"}).reset_index()
+
+# Đảm bảo không có giá trị NaN hoặc None
+investment_summary = investment_summary.fillna(0)
+
+# Dòng tổng hợp
+total_row_summary = pd.DataFrame({
+    "projectName": ["Tổng"],
+    "Số lần đầu tư": [investment_summary["Số lần đầu tư"].sum()],
+    "amountInvested": [investment_summary["amountInvested"].sum()],
+    "tokensReceived": [investment_summary["tokensReceived"].sum()]
+})
+
+# Gộp dữ liệu lại
+investment_summary = pd.concat([investment_summary, total_row_summary], ignore_index=True)
+
+# Hiển thị bảng Tổng Hợp Đầu Tư
+st.markdown("#### 📊 Tổng Hợp Đầu Tư")
+st.dataframe(investment_summary, use_container_width=True)
+
 
     
     df_sorted = df_wallet  # Hiển thị dữ liệu đã lọc
