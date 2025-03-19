@@ -11,7 +11,7 @@ df["investmentDate"] = pd.to_datetime(df["investmentDate"], errors='coerce')
 df["projectName"] = df["projectName"].str.strip().str.upper()
 
 # Thiết lập giao diện
-st.set_page_config(page_title="Phân Tích Đầu Tư dự án", layout="wide")
+st.set_page_config(page_title="Phân Tích Đầu Tư Crypto", layout="wide")
 st.title("💎 Phân Tích Đầu Tư Dự Án Crypto")
 
 # Tổng quan
@@ -25,8 +25,7 @@ st.markdown(
     **📊 Tổng số giao dịch:** {total_transactions}  
     **💰 Tổng số tiền đầu tư:** \${total_investment:,.2f}  
     **🪙 Tổng số token nhận được:** {total_tokens:,.2f}
-    """
-)
+    """")
 
 # Biểu đồ phân bổ đầu tư theo dự án
 st.markdown("## 📊 Phân Bổ Đầu Tư Theo Dự Án")
@@ -49,15 +48,11 @@ st.markdown("## ⚖️ Phân Tích Rủi Ro & Cơ Hội")
 fig4 = px.box(df, x="investmentType", y="amountInvested", title="Phân Phối Số Tiền Đầu Tư Theo Loại Hình")
 st.plotly_chart(fig4, use_container_width=True)
 
-# Lọc dữ liệu chỉ hiển thị các giao dịch liên quan đến dự án Zupad
+# Hiển thị bảng dữ liệu với Zupad ở đầu
 st.markdown("## 🏆 Giao Dịch Liên Quan Đến Dự Án Zupad")
-zupad_df = df[df["projectName"] == "ZUPAD"]
+df_sorted = df.copy()
+df_sorted["is_zupad"] = df_sorted["projectName"].apply(lambda x: 1 if x == "ZUPAD" else 0)
+df_sorted = df_sorted.sort_values(by=["is_zupad", "investmentDate"], ascending=[False, False]).drop(columns=["is_zupad"])
 
-# Hiển thị bảng với đường kẻ
-st.dataframe(
-    zupad_df.style.set_properties(
-        **{"background-color": "#FFFFFF", "border": "1px solid #000000", "color": "#000000"}
-    ).set_table_styles(
-        [{'selector': 'th, td', 'props': [('border', '1px solid black')]}]
-    )
-)
+# Hiển thị bảng với các chức năng tìm kiếm, sắp xếp và lọc
+df_filtered = st.data_editor(df_sorted, height=400, use_container_width=True)
