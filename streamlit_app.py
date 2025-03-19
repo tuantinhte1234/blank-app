@@ -44,21 +44,22 @@ def search_transactions(df):
     details_by_project = df_filtered.groupby(["purchaseTokenSymbol", "projectName"])["amountInvested"].sum().reset_index()
     st.write("### 📊 Bảng Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
     st.dataframe(details_by_project, use_container_width=True)
-    
+
+# ✅ Sửa lỗi df_wallet -> df
 if df.empty:
-    st.warning("Không có dữ liệu giao dịch cho ví đã chọn.")
+    st.warning("Không có dữ liệu giao dịch.")
     detail_investment_summary = pd.DataFrame(columns=["projectName", "purchaseTokenSymbol", "amountInvested", "tokensReceived"])
 else:
-    detail_investment_summary = df_wallet.groupby(["projectName", "purchaseTokenSymbol"]).agg({
+    detail_investment_summary = df.groupby(["projectName", "purchaseTokenSymbol"]).agg({
         "amountInvested": "sum",
         "tokensReceived": "sum"
     }).reset_index()
-
 
 st.markdown("### 🏆 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
 st.dataframe(detail_investment_summary, use_container_width=True)
 
 # Hiển thị giao diện
-st.title("📈 Báo Cáo Wallet Addresss")
+st.title("📈 Báo Cáo Wallet Address")
 display_overview(df)
 search_transactions(df)
+
