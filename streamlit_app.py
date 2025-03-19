@@ -11,7 +11,7 @@ df["investmentDate"] = pd.to_datetime(df["investmentDate"], errors='coerce')
 df["projectName"] = df["projectName"].str.strip().str.upper()
 
 # Thiết lập giao diện
-st.set_page_config(page_title="Phân Tích Đầu Tư Crypto", layout="wide")
+st.set_page_config(page_title="Phân Tích Đầu Tư dự án", layout="wide")
 st.title("💎 Phân Tích Đầu Tư Dự Án Crypto")
 
 # Tổng quan
@@ -52,8 +52,12 @@ st.plotly_chart(fig4, use_container_width=True)
 # Lọc dữ liệu chỉ hiển thị các giao dịch liên quan đến dự án Zupad
 st.markdown("## 🏆 Giao Dịch Liên Quan Đến Dự Án Zupad")
 zupad_df = df[df["projectName"] == "ZUPAD"]
+
+# Hiển thị bảng với đường kẻ
 st.dataframe(
     zupad_df.style.set_properties(
         **{"background-color": "#FFFFFF", "border": "1px solid #000000", "color": "#000000"}
+    ).set_table_styles(
+        [{'selector': 'th, td', 'props': [('border', '1px solid black')]}]
     )
 )
