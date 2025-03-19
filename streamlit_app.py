@@ -12,37 +12,42 @@ df["investmentDate"] = pd.to_datetime(df["investmentDate"], errors='coerce')
 # Chuẩn hóa tên dự án để đảm bảo thống nhất
 df["projectName"] = df["projectName"].str.strip().str.upper()
 
-# Tiêu đề ứng dụng
-st.title("📊 Phân Tích Đầu Tư Dự Án Crypto")
+# Thiết lập giao diện
+st.set_page_config(page_title="Phân Tích Đầu Tư Crypto", layout="wide")
+st.title("💎 Phân Tích Đầu Tư Dự Án Crypto")
 
 # Tổng quan
-st.header("1️⃣ Tổng Quan Về Đầu Tư")
-st.write(f"**Tổng số giao dịch:** {df.shape[0]}")
-st.write(f"**Tổng số tiền đầu tư:** ${df['amountInvested'].sum():,.2f}")
-st.write(f"**Tổng số token nhận được:** {df['tokensReceived'].sum():,.2f}")
+st.markdown("## 📌 Tổng Quan Về Đầu Tư")
+st.markdown(
+    f"""
+    **📊 Tổng số giao dịch:** {df.shape[0]}  
+    **💰 Tổng số tiền đầu tư:** \${df['amountInvested'].sum():,.2f}  
+    **🪙 Tổng số token nhận được:** {df['tokensReceived'].sum():,.2f}
+    """
+)
 
 # Biểu đồ phân bổ đầu tư theo dự án
-st.header("2️⃣ Phân Bổ Đầu Tư Theo Dự Án")
-fig1 = px.pie(df, names="projectName", values="amountInvested", title="Tỷ trọng đầu tư theo dự án")
-st.plotly_chart(fig1)
+st.markdown("## 📊 Phân Bổ Đầu Tư Theo Dự Án")
+fig1 = px.pie(df, names="projectName", values="amountInvested", title="Tỷ Trọng Đầu Tư Theo Dự Án")
+st.plotly_chart(fig1, use_container_width=True)
 
-# Biểu đồ mối quan hệ giữa amountInvested và tokensReceived
-st.header("3️⃣ Mối Quan Hệ Giữa Số Tiền Đầu Tư Và Token Nhận Được")
-fig2 = px.scatter(df, x="amountInvested", y="tokensReceived", color="projectName", title="Tương quan giữa số tiền đầu tư và số token nhận được")
-st.plotly_chart(fig2)
+# Biểu đồ mối quan hệ giữa số tiền đầu tư và token nhận được
+st.markdown("## 🔗 Mối Quan Hệ Giữa Số Tiền Đầu Tư & Token Nhận Được")
+fig2 = px.scatter(df, x="amountInvested", y="tokensReceived", color="projectName", title="Tương Quan Giữa Số Tiền Đầu Tư & Token Nhận Được")
+st.plotly_chart(fig2, use_container_width=True)
 
 # Biểu đồ xu hướng đầu tư theo thời gian
-st.header("4️⃣ Xu Hướng Đầu Tư Theo Thời Gian")
+st.markdown("## 📈 Xu Hướng Đầu Tư Theo Thời Gian")
 df_time = df.groupby(df["investmentDate"].dt.date)["amountInvested"].sum().reset_index()
-fig3 = px.line(df_time, x="investmentDate", y="amountInvested", title="Xu hướng tổng vốn đầu tư theo thời gian")
-st.plotly_chart(fig3)
+fig3 = px.line(df_time, x="investmentDate", y="amountInvested", title="Xu Hướng Tổng Vốn Đầu Tư Theo Thời Gian")
+st.plotly_chart(fig3, use_container_width=True)
 
 # Biểu đồ phân bố số tiền đầu tư theo loại hình đầu tư
-st.header("5️⃣ Phân Tích Rủi Ro & Cơ Hội")
-fig4 = px.box(df, x="investmentType", y="amountInvested", title="Phân phối số tiền đầu tư theo loại hình")
-st.plotly_chart(fig4)
+st.markdown("## ⚖️ Phân Tích Rủi Ro & Cơ Hội")
+fig4 = px.box(df, x="investmentType", y="amountInvested", title="Phân Phối Số Tiền Đầu Tư Theo Loại Hình")
+st.plotly_chart(fig4, use_container_width=True)
 
 # Lọc dữ liệu chỉ hiển thị các giao dịch liên quan đến dự án Zupad
-st.header("6️⃣ Giao Dịch Liên Quan Đến Dự Án Zupad")
+st.markdown("## 🏆 Giao Dịch Liên Quan Đến Dự Án Zupad")
 zupad_df = df[df["projectName"] == "ZUPAD"]
-st.dataframe(zupad_df)
+st.dataframe(zupad_df.style.set_properties(**{"background-color": "#F8F9FA", "border": "1px solid #DEE2E6"}))
