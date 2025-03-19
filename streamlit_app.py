@@ -11,7 +11,7 @@ df["investmentDate"] = pd.to_datetime(df["investmentDate"], errors='coerce')
 df["projectName"] = df["projectName"].str.strip().str.upper()
 
 # Thiết lập giao diện
-st.set_page_config(page_title="Phân Tích Đầu Tư", layout="wide")
+st.set_page_config(page_title="Phân Tích Đầu Tư Crypto", layout="wide")
 st.title("💎 Phân Tích Đầu Tư Dự Án Crypto")
 
 # Tổng quan
@@ -25,7 +25,7 @@ st.markdown(
     **📊 Tổng số giao dịch:** {total_transactions}  
     **💰 Tổng số tiền đầu tư:** \${total_investment:,.2f}  
     **🪙 Tổng số token nhận được:** {total_tokens:,.2f}
-    """)
+    """")
 
 # Biểu đồ phân bổ đầu tư theo dự án
 st.markdown("## 📊 Phân Bổ Đầu Tư Theo Dự Án")
@@ -48,17 +48,21 @@ st.markdown("## ⚖️ Phân Tích Rủi Ro & Cơ Hội")
 fig4 = px.box(df, x="investmentType", y="amountInvested", title="Phân Phối Số Tiền Đầu Tư Theo Loại Hình")
 st.plotly_chart(fig4, use_container_width=True)
 
-# Hiển thị bảng dữ liệu với Zupad ở đầu
-st.markdown("## 🏆 Giao Dịch Liên Quan Đến các Dự Án")
+# Hiển thị bảng dữ liệu với Zupad lên đầu
+st.markdown("## 🏆 Giao Dịch Đầu Tư")
 df_sorted = df.copy()
 df_sorted["is_zupad"] = df_sorted["projectName"].apply(lambda x: 1 if x == "ZUPAD" else 0)
 df_sorted = df_sorted.sort_values(by=["is_zupad", "investmentDate"], ascending=[False, False]).drop(columns=["is_zupad"])
 
+# Hướng dẫn sao chép địa chỉ ví
+st.markdown("### 🔎 Tìm Kiếm Giao Dịch")
+st.info("Nhấn Ctrl + C để sao chép địa chỉ ví và dán vào ô dưới để kiểm tra")
+
 # Lựa chọn Wallet Address để xem giao dịch chi tiết
-selected_wallet = st.selectbox("🔍 Chọn wallet Address của khách hàng từ bảng dưới đây, dể Xem Giao Dịch:", ["Tất cả"] + df_sorted["walletAddress"].unique().tolist())
+selected_wallet = st.selectbox("🔍 Chọn Ví Để Xem Giao Dịch:", ["Tất cả"] + df_sorted["walletAddress"].unique().tolist())
 
 if selected_wallet != "Tất cả":
     df_sorted = df_sorted[df_sorted["walletAddress"] == selected_wallet]
 
 # Hiển thị bảng với các chức năng tìm kiếm, sắp xếp và lọc
-df_filtered = st.data_editor(df_sorted, height=400, use_container_width=True)
+df_filtered = st.data_editor(df_sorted, height=500, use_container_width=True, hide_index=True)
