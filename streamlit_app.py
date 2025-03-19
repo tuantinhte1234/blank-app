@@ -81,10 +81,11 @@ if selected_wallet != "Tất cả":
     purchase_token_stats = purchase_token_stats[purchase_token_stats["purchaseTokenSymbol"] != "Tổng"]
 
 
-    # Hiển thị thông tin
-   st.markdown(f"### 📌 Tổng Kết Đầu Tư Của Ví {selected_wallet}")
-   st.markdown("#### 🏦 Thống Kê PurchaseTokenSymbol")
-   st.dataframe(purchase_token_stats, use_container_width=True)
+# Hiển thị thông tin
+st.markdown(f"### 📌 Tổng Kết Đầu Tư Của Ví {selected_wallet}")
+st.markdown("#### 🏦 Thống Kê PurchaseTokenSymbol")
+st.dataframe(purchase_token_stats, use_container_width=True)
+
 
 
 # Nếu không chọn ví cụ thể, lấy toàn bộ dữ liệu
