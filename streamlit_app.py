@@ -94,7 +94,8 @@ if selected_wallet != "Tất cả":
     st.dataframe(purchase_token_stats, use_container_width=True)
 
     st.markdown("#### 📊 Tổng Hợp Đầu Tư")
-    st.dataframe(summary, use_container_width=True)
+    st.dataframe(purchase_token_stats, use_container_width=True)
+
     
     df_sorted = df_wallet  # Hiển thị dữ liệu đã lọc
 
