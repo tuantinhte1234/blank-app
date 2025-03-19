@@ -45,6 +45,15 @@ def search_transactions(df):
     st.write("### 📊 Bảng Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
     st.dataframe(details_by_project, use_container_width=True)
 
+    # Bảng thống kê chi tiết đầu tư của từng token cho 21 dự án
+    detail_investment_summary = df_wallet.groupby(["projectName", "purchaseTokenSymbol"]).agg({
+        "amountInvested": "sum",
+        "tokensReceived": "sum"
+    }).reset_index()
+    
+    st.markdown("### 🏆 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
+    st.dataframe(detail_investment_summary, use_container_width=True)
+
 # Hiển thị giao diện
 st.title("📈 Báo Cáo Wallet Addresss")
 display_overview(df)
