@@ -25,7 +25,7 @@ st.markdown(
     **📊 Tổng số giao dịch:** {total_transactions}  
     **💰 Tổng số tiền đầu tư:** \${total_investment:,.2f}  
     **🪙 Tổng số token nhận được:** {total_tokens:,.2f}
-    """)
+    """")
 
 # Biểu đồ phân bổ đầu tư theo dự án
 st.markdown("## 📊 Phân Bổ Đầu Tư Theo Dự Án")
@@ -53,6 +53,12 @@ st.markdown("## 🏆 Giao Dịch Liên Quan Đến Dự Án Zupad")
 df_sorted = df.copy()
 df_sorted["is_zupad"] = df_sorted["projectName"].apply(lambda x: 1 if x == "ZUPAD" else 0)
 df_sorted = df_sorted.sort_values(by=["is_zupad", "investmentDate"], ascending=[False, False]).drop(columns=["is_zupad"])
+
+# Lựa chọn Wallet Address để xem giao dịch chi tiết
+selected_wallet = st.selectbox("🔍 Chọn Ví Để Xem Giao Dịch:", ["Tất cả"] + df_sorted["walletAddress"].unique().tolist())
+
+if selected_wallet != "Tất cả":
+    df_sorted = df_sorted[df_sorted["walletAddress"] == selected_wallet]
 
 # Hiển thị bảng với các chức năng tìm kiếm, sắp xếp và lọc
 df_filtered = st.data_editor(df_sorted, height=400, use_container_width=True)
