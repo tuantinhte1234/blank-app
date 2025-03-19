@@ -18,14 +18,21 @@ st.title("💎 Phân Tích Đầu Tư Dự Án Crypto")
 total_transactions = df.shape[0]
 total_investment = df['amountInvested'].sum()
 total_tokens = df['tokensReceived'].sum()
+total_projects = df['projectName'].nunique()
 
 st.markdown("## 📌 Tổng Quan Về Đầu Tư")
 st.markdown(
     f"""
     **📊 Tổng số giao dịch:** {total_transactions}  
     **💰 Tổng số tiền đầu tư:** \${total_investment:,.2f}  
-    **🪙 Tổng số token nhận được:** {total_tokens:,.2f}
+    **🪙 Tổng số token nhận được:** {total_tokens:,.2f}  
+    **📌 Tổng số dự án:** {total_projects}  
     """)
+
+# Hiển thị danh sách dự án và Symbol
+total_project_list = df[['projectName', 'projectSymbol']].drop_duplicates()
+st.markdown("## 🏗️ Danh Sách Dự Án")
+st.dataframe(total_project_list, use_container_width=True)
 
 # Biểu đồ phân bổ đầu tư theo dự án
 st.markdown("## 📊 Phân Bổ Đầu Tư Theo Dự Án")
