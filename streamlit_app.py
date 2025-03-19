@@ -19,9 +19,6 @@ total_transactions = df.shape[0]
 total_investment = df['amountInvested'].sum()
 total_tokens = df['tokensReceived'].sum()
 total_projects = df['projectName'].nunique()
-total_project_symbols = df['projectSymbol'].nunique()
-
-total_summary = df.groupby("purchaseTokenSymbol")["tokensReceived"].sum().reset_index()
 
 st.markdown("## 📌 Tổng Quan Về Đầu Tư")
 st.markdown(
@@ -30,10 +27,7 @@ st.markdown(
     **💰 Tổng số tiền đầu tư:** \${total_investment:,.2f}  
     **🪙 Tổng số token nhận được:** {total_tokens:,.2f}  
     **📌 Tổng số dự án:** {total_projects}  
-    **🔢 Tổng số mã token khác nhau:** {total_project_symbols}  
-    """)
-
-st.dataframe(total_summary, use_container_width=True)
+    """")
 
 # Biểu đồ phân bổ đầu tư theo dự án
 st.markdown("## 📊 Phân Bổ Đầu Tư Theo Dự Án")
@@ -70,17 +64,28 @@ st.info("Nhấn Ctrl + C để sao chép địa chỉ ví và dán vào ô dư�
 selected_wallet = st.selectbox("🔍 Chọn Ví Để Xem Giao Dịch:", ["Tất cả"] + df_sorted["walletAddress"].unique().tolist())
 
 if selected_wallet != "Tất cả":
-    df_sorted = df_sorted[df_sorted["walletAddress"] == selected_wallet]
-    user_summary = df_sorted.groupby("purchaseTokenSymbol")["tokensReceived"].sum().reset_index()
-    user_total_investment = df_sorted['amountInvested'].sum()
-    user_total_tokens = df_sorted['tokensReceived'].sum()
+    df_wallet = df_sorted[df_sorted["walletAddress"] == selected_wallet]
+    
+    # Thống kê số lần sử dụng từng purchaseTokenSymbol
+    purchase_token_counts = df_wallet["purchaseTokenSymbol"].value_counts().reset_index()
+    purchase_token_counts.columns = ["purchaseTokenSymbol", "Số lần sử dụng"]
+    
+    # Tổng hợp dữ liệu theo projectSymbol
+    summary = df_wallet.groupby("projectSymbol").agg({
+        "amountInvested": "sum",
+        "tokensReceived": "sum",
+        "purchaseTokenSymbol": "count"
+    }).reset_index()
+    
+    # Hiển thị thông tin
     st.markdown(f"### 📌 Tổng Kết Đầu Tư Của Ví {selected_wallet}")
-    st.markdown(
-        f"""
-        **💰 Tổng số tiền đầu tư:** \${user_total_investment:,.2f}  
-        **🪙 Tổng số token nhận được:** {user_total_tokens:,.2f}  
-        """)
-    st.dataframe(user_summary, use_container_width=True)
+    st.markdown("#### 🏦 Thống Kê PurchaseTokenSymbol")
+    st.dataframe(purchase_token_counts, use_container_width=True)
+    
+    st.markdown("#### 📊 Tổng Hợp Đầu Tư")
+    st.dataframe(summary, use_container_width=True)
+    
+    df_sorted = df_wallet  # Hiển thị dữ liệu đã lọc
 
 # Hiển thị bảng với các chức năng tìm kiếm, sắp xếp và lọc
 df_filtered = st.data_editor(df_sorted, height=500, use_container_width=True, hide_index=True)
