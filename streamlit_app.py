@@ -93,6 +93,12 @@ if selected_wallet != "Tất cả":
     st.markdown("#### 🏦 Thống Kê PurchaseTokenSymbol")
     st.dataframe(purchase_token_stats, use_container_width=True)
 
+# Nếu không chọn ví cụ thể, lấy toàn bộ dữ liệu
+if selected_wallet == "Tất cả":
+    df_wallet = df_sorted.copy()
+else:
+    df_wallet = df_sorted[df_sorted["walletAddress"] == selected_wallet]
+
 # Thống kê tổng hợp đầu tư theo projectName
 investment_summary = df_wallet.groupby("projectName").agg({
     "amountInvested": "sum",
@@ -118,9 +124,7 @@ investment_summary = pd.concat([investment_summary, total_row_summary], ignore_i
 st.markdown("#### 📊 Tổng Hợp Đầu Tư")
 st.dataframe(investment_summary, use_container_width=True)
 
+# Hiển thị bảng giao dịch
+df_sorted = df_wallet  # Cập nhật dữ liệu hiển thị
+st.data_editor(df_sorted, height=500, use_container_width=True, hide_index=True)
 
-    
-df_sorted = df_wallet  # Hiển thị dữ liệu đã lọc
-
-# Hiển thị bảng với các chức năng tìm kiếm, sắp xếp và lọc
-df_filtered = st.data_editor(df_sorted, height=500, use_container_width=True, hide_index=True)
