@@ -79,7 +79,7 @@ if selected_wallet != "Tất cả":
         f"""
         **💰 Tổng số tiền đầu tư:** \${user_total_investment:,.2f}  
         **🪙 Tổng số token nhận được:** {user_total_tokens:,.2f}  
-        """")
+        """)
     st.dataframe(user_summary, use_container_width=True)
 
 # Hiển thị bảng với các chức năng tìm kiếm, sắp xếp và lọc
