@@ -11,8 +11,8 @@ df["investmentDate"] = pd.to_datetime(df["investmentDate"], errors='coerce')
 df["projectName"] = df["projectName"].str.strip().str.upper()
 
 # Thiết lập giao diện
-st.set_page_config(page_title="Phân Tích Đầu Tư", layout="wide")
-st.title("💎 Phân Tích Dự Án")
+st.set_page_config(page_title="Phân Tích Đầu Tư Crypto", layout="wide")
+st.title("💎 Phân Tích Đầu Tư Dự Án Crypto")
 
 # Tổng quan
 total_transactions = df.shape[0]
@@ -27,7 +27,7 @@ st.markdown(
     **💰 Tổng số tiền đầu tư:** \${total_investment:,.2f}  
     **🪙 Tổng số token nhận được:** {total_tokens:,.2f}  
     **📌 Tổng số dự án:** {total_projects}  
-    """)
+    """")
 
 # Biểu đồ phân bổ đầu tư theo dự án
 st.markdown("## 📊 Phân Bổ Đầu Tư Theo Dự Án")
@@ -76,6 +76,12 @@ if selected_wallet != "Tất cả":
         "tokensReceived": "sum",
         "purchaseTokenSymbol": "count"
     }).reset_index()
+    
+    # Thêm tổng số tiền amountInvested và tokensReceived
+    total_amount = df_wallet["amountInvested"].sum()
+    total_tokens = df_wallet["tokensReceived"].sum()
+    total_row = pd.DataFrame({"purchaseTokenSymbol": ["Tổng"], "Số lần sử dụng": ["-"], "amountInvested": [total_amount], "tokensReceived": [total_tokens]})
+    purchase_token_counts = pd.concat([purchase_token_counts, total_row], ignore_index=True)
     
     # Hiển thị thông tin
     st.markdown(f"### 📌 Tổng Kết Đầu Tư Của Ví {selected_wallet}")
