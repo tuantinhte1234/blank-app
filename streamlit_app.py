@@ -77,21 +77,15 @@ if selected_wallet != "Tất cả":
     # Đảm bảo không có giá trị NaN hoặc None
     purchase_token_stats = purchase_token_stats.fillna(0)
     
-    # Dòng tổng hợp
-    total_row = pd.DataFrame({
-        "purchaseTokenSymbol": ["Tổng"],
-        "Số lần sử dụng": [purchase_token_stats["Số lần sử dụng"].sum()],
-        "amountInvested": [purchase_token_stats["amountInvested"].sum()],
-        "tokensReceived": [purchase_token_stats["tokensReceived"].sum()]
-    })
+    # Loại bỏ dòng tổng hợp
+    purchase_token_stats = purchase_token_stats[purchase_token_stats["purchaseTokenSymbol"] != "Tổng"]
 
-    # Gộp dữ liệu lại
-    purchase_token_stats = pd.concat([purchase_token_stats, total_row], ignore_index=True)
 
     # Hiển thị thông tin
-    st.markdown(f"### 📌 Tổng Kết Đầu Tư Của Ví {selected_wallet}")
-    st.markdown("#### 🏦 Thống Kê PurchaseTokenSymbol")
-    st.dataframe(purchase_token_stats, use_container_width=True)
+   st.markdown(f"### 📌 Tổng Kết Đầu Tư Của Ví {selected_wallet}")
+   st.markdown("#### 🏦 Thống Kê PurchaseTokenSymbol")
+   st.dataframe(purchase_token_stats, use_container_width=True)
+
 
 # Nếu không chọn ví cụ thể, lấy toàn bộ dữ liệu
 if selected_wallet == "Tất cả":
