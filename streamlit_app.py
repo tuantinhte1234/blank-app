@@ -11,8 +11,8 @@ df["investmentDate"] = pd.to_datetime(df["investmentDate"], errors='coerce')
 df["projectName"] = df["projectName"].str.strip().str.upper()
 
 # Thiết lập giao diện
-st.set_page_config(page_title="Phân Tích Đầu Tư Crypto", layout="wide")
-st.title("💎 Phân Tích Đầu Tư Dự Án Crypto")
+st.set_page_config(page_title="Phân Tích Đầu Tư", layout="wide")
+st.title("💎 Phân Tích Dự Án")
 
 # Tổng quan
 total_transactions = df.shape[0]
