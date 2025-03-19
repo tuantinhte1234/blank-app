@@ -12,13 +12,16 @@ df["projectName"] = df["projectName"].str.strip().str.upper()
 
 # Thiết lập giao diện
 st.set_page_config(page_title="Phân Tích Đầu Tư Crypto", layout="wide")
-st.title("💎 Phân Tích Dự Án")
+st.title("💎 Phân Tích Đầu Tư Dự Án Crypto")
 
 # Tổng quan
 total_transactions = df.shape[0]
 total_investment = df['amountInvested'].sum()
 total_tokens = df['tokensReceived'].sum()
 total_projects = df['projectName'].nunique()
+total_project_symbols = df['projectSymbol'].nunique()
+
+total_summary = df.groupby("purchaseTokenSymbol")["tokensReceived"].sum().reset_index()
 
 st.markdown("## 📌 Tổng Quan Về Đầu Tư")
 st.markdown(
@@ -27,12 +30,10 @@ st.markdown(
     **💰 Tổng số tiền đầu tư:** \${total_investment:,.2f}  
     **🪙 Tổng số token nhận được:** {total_tokens:,.2f}  
     **📌 Tổng số dự án:** {total_projects}  
-    """)
+    **🔢 Tổng số mã token khác nhau:** {total_project_symbols}  
+    """")
 
-# Hiển thị danh sách dự án và Symbol
-total_project_list = df[['projectName', 'projectSymbol']].drop_duplicates()
-st.markdown("## 🏗️ Danh Sách Các Dự Án")
-st.dataframe(total_project_list, use_container_width=True)
+st.dataframe(total_summary, use_container_width=True)
 
 # Biểu đồ phân bổ đầu tư theo dự án
 st.markdown("## 📊 Phân Bổ Đầu Tư Theo Dự Án")
@@ -70,6 +71,16 @@ selected_wallet = st.selectbox("🔍 Chọn Ví Để Xem Giao Dịch:", ["Tất
 
 if selected_wallet != "Tất cả":
     df_sorted = df_sorted[df_sorted["walletAddress"] == selected_wallet]
+    user_summary = df_sorted.groupby("purchaseTokenSymbol")["tokensReceived"].sum().reset_index()
+    user_total_investment = df_sorted['amountInvested'].sum()
+    user_total_tokens = df_sorted['tokensReceived'].sum()
+    st.markdown(f"### 📌 Tổng Kết Đầu Tư Của Ví {selected_wallet}")
+    st.markdown(
+        f"""
+        **💰 Tổng số tiền đầu tư:** \${user_total_investment:,.2f}  
+        **🪙 Tổng số token nhận được:** {user_total_tokens:,.2f}  
+        """")
+    st.dataframe(user_summary, use_container_width=True)
 
 # Hiển thị bảng với các chức năng tìm kiếm, sắp xếp và lọc
 df_filtered = st.data_editor(df_sorted, height=500, use_container_width=True, hide_index=True)
