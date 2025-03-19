@@ -11,7 +11,7 @@ df["investmentDate"] = pd.to_datetime(df["investmentDate"], errors='coerce')
 df["projectName"] = df["projectName"].str.strip().str.upper()
 
 # Thiết lập giao diện
-st.set_page_config(page_title="Phân Tích Đầu Tư Crypto", layout="wide")
+st.set_page_config(page_title="Phân Tích Đầu Tư", layout="wide")
 st.title("💎 Phân Tích Đầu Tư Dự Án Crypto")
 
 # Tổng quan
@@ -49,13 +49,13 @@ fig4 = px.box(df, x="investmentType", y="amountInvested", title="Phân Phối S�
 st.plotly_chart(fig4, use_container_width=True)
 
 # Hiển thị bảng dữ liệu với Zupad ở đầu
-st.markdown("## 🏆 Giao Dịch Liên Quan Đến Dự Án Zupad")
+st.markdown("## 🏆 Giao Dịch Liên Quan Đến các Dự Án")
 df_sorted = df.copy()
 df_sorted["is_zupad"] = df_sorted["projectName"].apply(lambda x: 1 if x == "ZUPAD" else 0)
 df_sorted = df_sorted.sort_values(by=["is_zupad", "investmentDate"], ascending=[False, False]).drop(columns=["is_zupad"])
 
 # Lựa chọn Wallet Address để xem giao dịch chi tiết
-selected_wallet = st.selectbox("🔍 Chọn Ví Để Xem Giao Dịch:", ["Tất cả"] + df_sorted["walletAddress"].unique().tolist())
+selected_wallet = st.selectbox("🔍 Chọn wallet Address của khách hàng từ bảng dưới đây, dể Xem Giao Dịch:", ["Tất cả"] + df_sorted["walletAddress"].unique().tolist())
 
 if selected_wallet != "Tất cả":
     df_sorted = df_sorted[df_sorted["walletAddress"] == selected_wallet]
