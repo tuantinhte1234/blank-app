@@ -42,6 +42,7 @@ st.header("5️⃣ Phân Tích Rủi Ro & Cơ Hội")
 fig4 = px.box(df, x="investmentType", y="amountInvested", title="Phân phối số tiền đầu tư theo loại hình")
 st.plotly_chart(fig4)
 
-# Cho phép người dùng tải xuống dữ liệu sau khi lọc
-csv = df.to_csv(index=False).encode("utf-8")
-st.download_button("📥 Tải xuống dữ liệu", data=csv, file_name="investment_analysis.csv", mime="text/csv")
+# Lọc dữ liệu chỉ hiển thị các giao dịch liên quan đến dự án Zupad
+st.header("6️⃣ Giao Dịch Liên Quan Đến Dự Án Zupad")
+zupad_df = df[df["projectName"] == "ZUPAD"]
+st.dataframe(zupad_df)
