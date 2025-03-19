@@ -67,39 +67,32 @@ selected_wallet = st.selectbox("🔍 Chọn Ví Để Xem Giao Dịch:", ["Tất
 if selected_wallet != "Tất cả":
     df_wallet = df_sorted[df_sorted["walletAddress"] == selected_wallet]
     
-    # Thống kê số lần sử dụng từng purchaseTokenSymbol
-    purchase_token_counts = df_wallet["purchaseTokenSymbol"].value_counts().reset_index()
-    purchase_token_counts.columns = ["purchaseTokenSymbol", "Số lần sử dụng"]
-
-    # Đảm bảo không có giá trị NaN hoặc None
-    purchase_token_counts["Số lần sử dụng"] = purchase_token_counts["Số lần sử dụng"].fillna(0).astype(int)
-
-    # Tổng hợp dữ liệu theo projectSymbol
-    summary = df_wallet.groupby("projectSymbol").agg({
+    # Thống kê số lần sử dụng, tổng amountInvested và tokensReceived theo purchaseTokenSymbol
+    purchase_token_stats = df_wallet.groupby("purchaseTokenSymbol").agg({
         "amountInvested": "sum",
         "tokensReceived": "sum",
         "purchaseTokenSymbol": "count"
-    }).reset_index()
+    }).rename(columns={"purchaseTokenSymbol": "Số lần sử dụng"}).reset_index()
 
-    # Thêm dòng tổng hợp
-    total_amount = df_wallet["amountInvested"].sum()
-    total_tokens = df_wallet["tokensReceived"].sum()
-    total_usage = purchase_token_counts["Số lần sử dụng"].sum()  # Tổng số lần sử dụng token
-
+    # Đảm bảo không có giá trị NaN hoặc None
+    purchase_token_stats = purchase_token_stats.fillna(0)
+    
+    # Dòng tổng hợp
     total_row = pd.DataFrame({
         "purchaseTokenSymbol": ["Tổng"],
-        "Số lần sử dụng": [total_usage],  # Đặt tổng số lần sử dụng thay vì "-"
-        "amountInvested": [total_amount],
-        "tokensReceived": [total_tokens]
+        "Số lần sử dụng": [purchase_token_stats["Số lần sử dụng"].sum()],
+        "amountInvested": [purchase_token_stats["amountInvested"].sum()],
+        "tokensReceived": [purchase_token_stats["tokensReceived"].sum()]
     })
 
     # Gộp dữ liệu lại
-    purchase_token_counts = pd.concat([purchase_token_counts, total_row], ignore_index=True)
+    purchase_token_stats = pd.concat([purchase_token_stats, total_row], ignore_index=True)
 
     # Hiển thị thông tin
     st.markdown(f"### 📌 Tổng Kết Đầu Tư Của Ví {selected_wallet}")
     st.markdown("#### 🏦 Thống Kê PurchaseTokenSymbol")
-    st.dataframe(purchase_token_counts, use_container_width=True)
+    st.dataframe(purchase_token_stats, use_container_width=True)
+
     
     st.markdown("#### 📊 Tổng Hợp Đầu Tư")
     st.dataframe(summary, use_container_width=True)
