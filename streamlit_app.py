@@ -120,7 +120,7 @@ st.dataframe(investment_summary, use_container_width=True)
 
 
     
-    df_sorted = df_wallet  # Hiển thị dữ liệu đã lọc
+df_sorted = df_wallet  # Hiển thị dữ liệu đã lọc
 
 # Hiển thị bảng với các chức năng tìm kiếm, sắp xếp và lọc
 df_filtered = st.data_editor(df_sorted, height=500, use_container_width=True, hide_index=True)
