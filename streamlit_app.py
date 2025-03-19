@@ -27,7 +27,8 @@ st.markdown(
     **💰 Tổng số tiền đầu tư:** \${total_investment:,.2f}  
     **🪙 Tổng số token nhận được:** {total_tokens:,.2f}  
     **📌 Tổng số dự án:** {total_projects}  
-    """)
+    """
+)
 
 # Biểu đồ phân bổ đầu tư theo dự án
 st.markdown("## 📊 Phân Bổ Đầu Tư Theo Dự Án")
@@ -69,20 +70,32 @@ if selected_wallet != "Tất cả":
     # Thống kê số lần sử dụng từng purchaseTokenSymbol
     purchase_token_counts = df_wallet["purchaseTokenSymbol"].value_counts().reset_index()
     purchase_token_counts.columns = ["purchaseTokenSymbol", "Số lần sử dụng"]
-    
+
+    # Đảm bảo không có giá trị NaN hoặc None
+    purchase_token_counts["Số lần sử dụng"] = purchase_token_counts["Số lần sử dụng"].fillna(0).astype(int)
+
     # Tổng hợp dữ liệu theo projectSymbol
     summary = df_wallet.groupby("projectSymbol").agg({
         "amountInvested": "sum",
         "tokensReceived": "sum",
         "purchaseTokenSymbol": "count"
     }).reset_index()
-    
-    # Thêm tổng số tiền amountInvested và tokensReceived
+
+    # Thêm dòng tổng hợp
     total_amount = df_wallet["amountInvested"].sum()
     total_tokens = df_wallet["tokensReceived"].sum()
-    total_row = pd.DataFrame({"purchaseTokenSymbol": ["Tổng"], "Số lần sử dụng": ["-"], "amountInvested": [total_amount], "tokensReceived": [total_tokens]})
+    total_usage = purchase_token_counts["Số lần sử dụng"].sum()  # Tổng số lần sử dụng token
+
+    total_row = pd.DataFrame({
+        "purchaseTokenSymbol": ["Tổng"],
+        "Số lần sử dụng": [total_usage],  # Đặt tổng số lần sử dụng thay vì "-"
+        "amountInvested": [total_amount],
+        "tokensReceived": [total_tokens]
+    })
+
+    # Gộp dữ liệu lại
     purchase_token_counts = pd.concat([purchase_token_counts, total_row], ignore_index=True)
-    
+
     # Hiển thị thông tin
     st.markdown(f"### 📌 Tổng Kết Đầu Tư Của Ví {selected_wallet}")
     st.markdown("#### 🏦 Thống Kê PurchaseTokenSymbol")
