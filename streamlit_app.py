@@ -46,6 +46,6 @@ def search_transactions(df):
     st.dataframe(details_by_project, use_container_width=True)
 
 # Hiển thị giao diện
-st.title("📈 Báo Cáo Đầu Tư Crypto")
+st.title("📈 Báo Cáo Wallet Addresss")
 display_overview(df)
 search_transactions(df)
