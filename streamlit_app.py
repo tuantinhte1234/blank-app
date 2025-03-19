@@ -25,7 +25,7 @@ st.markdown(
     **📊 Tổng số giao dịch:** {total_transactions}  
     **💰 Tổng số tiền đầu tư:** \${total_investment:,.2f}  
     **🪙 Tổng số token nhận được:** {total_tokens:,.2f}
-    """")
+    """)
 
 # Biểu đồ phân bổ đầu tư theo dự án
 st.markdown("## 📊 Phân Bổ Đầu Tư Theo Dự Án")
