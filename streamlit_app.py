@@ -31,7 +31,7 @@ st.markdown(
 
 # Hiển thị danh sách dự án và Symbol
 total_project_list = df[['projectName', 'projectSymbol']].drop_duplicates()
-st.markdown("## 🏗️ Danh Sách Dự Án")
+st.markdown("## 🏗️ Danh Sách Các Dự Án")
 st.dataframe(total_project_list, use_container_width=True)
 
 # Biểu đồ phân bổ đầu tư theo dự án
