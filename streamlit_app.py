@@ -106,7 +106,7 @@ else:
         "tokensReceived": "sum"
     }).reset_index()
 detail_investment_summary.index = range(1, len(detail_investment_summary) + 1)
-st.dataframe(detail_investment_summary, use_container_width=True, hide_index=True)
+st.dataframe(detail_investment_summary, use_container_width=True, hide_index=False)
 
 # === HIỂN THỊ CÁC PHẦN ===
 display_overview(df)
