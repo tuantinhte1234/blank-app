@@ -71,6 +71,7 @@ def display_overview(df):
 #         st.subheader("📊 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
 #         st.dataframe(details_by_project, use_container_width=True)
 #=== PHẦN 2: TÌM KIẾM GIAO DỊCH ===
+#=== PHẦN 2: TÌM KIẾM GIAO DỊCH ===
 def search_transactions(df):
     st.header("🔍 Tìm Kiếm Giao Dịch")
 
@@ -83,26 +84,29 @@ def search_transactions(df):
 
     # Danh sách token cần hiển thị bảng riêng
     tokens = ["USDT", "ZUKIPOINT", "ZUKIVERSE"]
+
+    # Chia giao diện thành 3 cột
+    col1, col2, col3 = st.columns(3)
     
-    for token in tokens:
+    # Duyệt qua từng token và hiển thị trong từng cột
+    for col, token in zip([col1, col2, col3], tokens):
         df_token = df_filtered[df_filtered["purchaseTokenSymbol"] == token]
-        
+
         if not df_token.empty:
             # Nhóm dữ liệu theo projectName và tính tổng amountInvested
             summary = df_token.groupby("projectName")["amountInvested"].sum().reset_index()
-            
+
             # Thêm ký hiệu "$"
             summary["amountInvested"] = summary["amountInvested"].apply(lambda x: f"${x:,.2f}")
 
             # Tính tổng số tiền đầu tư của token đó
             total_amount = df_token["amountInvested"].sum()
 
-            # Hiển thị bảng
-            st.subheader(f"📊 Chi Tiết Đầu Tư: {token}")
-            st.dataframe(summary, use_container_width=True)
-
-            # Hiển thị tổng số tiền đầu tư
-            st.markdown(f"**Tổng {token}:** ${total_amount:,.2f}")
+            # Hiển thị bảng trong từng cột
+            with col:
+                st.subheader(f"📊 {token}")
+                st.dataframe(summary, use_container_width=True)
+                st.markdown(f"**Tổng {token}:** ${total_amount:,.2f}")
 
 # === PHẦN 3: CHI TIẾT ĐẦU TƯ (ĐỂ CUỐI CÙNG) ===
 st.markdown("---")
