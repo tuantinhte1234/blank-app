@@ -48,29 +48,49 @@ def display_overview(df):
     total_investment_usd = df["amountInvested"].sum()
     st.markdown(f"### 💵 **Tổng Số Đầu Tư Quy Đổi: ${total_investment_usd:,.2f}**", unsafe_allow_html=True)
 
+
 # #=== PHẦN 2: TÌM KIẾM GIAO DỊCH ===
 # def search_transactions(df):
 #     st.header("🔍 Tìm Kiếm Giao Dịch")
-    
+
 #     selected_wallet = st.text_input("Nhập Địa Chỉ Ví:", "")
-    
+
 #     if selected_wallet:
 #         df_filtered = df[df["walletAddress"].str.contains(selected_wallet, case=False, na=False)]
 #     else:
 #         df_filtered = df
+
+#     # Danh sách token cần hiển thị bảng riêng
+#     tokens = ["USDT", "ZUKIPOINT", "ZUKIVERSE"]
+
+#     # Chia giao diện thành 3 cột
+#     col1, col2, col3 = st.columns(3)
     
-#     col1, col2 = st.columns(2)
-    
-#     with col1:
-#         summary_by_token = df_filtered.groupby("purchaseTokenSymbol")["amountInvested"].sum().reset_index()
-#         st.subheader("📑 Tổng Hợp Số Tiền Đầu Tư Của Từng Token")
-#         st.dataframe(summary_by_token, use_container_width=True)
-    
-#     with col2:
-#         details_by_project = df_filtered.groupby(["purchaseTokenSymbol", "projectName"])["amountInvested"].sum().reset_index()
-#         st.subheader("📊 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
-#         st.dataframe(details_by_project, use_container_width=True)
-#=== PHẦN 2: TÌM KIẾM GIAO DỊCH ===
+#     # Duyệt qua từng token và hiển thị trong từng cột
+#     for col, token in zip([col1, col2, col3], tokens):
+#         df_token = df_filtered[df_filtered["purchaseTokenSymbol"] == token]
+
+#         if not df_token.empty:
+#             # Nhóm dữ liệu theo projectName và tính tổng amountInvested
+#             summary = df_token.groupby("projectName")["amountInvested"].sum().reset_index()
+
+#             # Thêm ký hiệu "$"
+#             summary["amountInvested"] = summary["amountInvested"].apply(lambda x: f"${x:,.2f}")
+
+#             # Tính tổng số tiền đầu tư của token đó
+#             total_amount = df_token["amountInvested"].sum()
+#         else:
+#             # Nếu không có dữ liệu, tạo bảng rỗng với thông báo
+#             summary = pd.DataFrame({"projectName": ["Không có giao dịch"], "amountInvested": ["-"]})
+#             total_amount = 0
+#         # Đảm bảo bảng có đúng 9 hàng
+#         while len(summary) < 10:
+#             summary = pd.concat([summary, pd.DataFrame({"projectName": [""], "amountInvested": [""]})], ignore_index=True)
+#         # Hiển thị bảng trong từng cột
+#         with col:
+#             st.subheader(f"{token}")
+#             st.dataframe(summary, use_container_width=True)
+#             st.markdown(f"**Tổng {token}:** ${total_amount:,.2f}")
 #=== PHẦN 2: TÌM KIẾM GIAO DỊCH ===
 def search_transactions(df):
     st.header("🔍 Tìm Kiếm Giao Dịch")
@@ -98,22 +118,21 @@ def search_transactions(df):
 
             # Thêm ký hiệu "$"
             summary["amountInvested"] = summary["amountInvested"].apply(lambda x: f"${x:,.2f}")
-
-            # Tính tổng số tiền đầu tư của token đó
-            total_amount = df_token["amountInvested"].sum()
         else:
-            # Nếu không có dữ liệu, tạo bảng rỗng với thông báo
+            # Nếu không có dữ liệu, tạo bảng với 1 hàng thông báo
             summary = pd.DataFrame({"projectName": ["Không có giao dịch"], "amountInvested": ["-"]})
-            total_amount = 0
+
         # Đảm bảo bảng có đúng 9 hàng
-        while len(summary) < 10:
+        while len(summary) < 9:
             summary = pd.concat([summary, pd.DataFrame({"projectName": [""], "amountInvested": [""]})], ignore_index=True)
+
+        # Thêm cột Số thứ tự (bắt đầu từ 1)
+        summary.insert(0, "Số thứ tự", range(1, len(summary) + 1))
+
         # Hiển thị bảng trong từng cột
         with col:
-            st.subheader(f"{token}")
-            st.dataframe(summary, use_container_width=True)
-            st.markdown(f"**Tổng {token}:** ${total_amount:,.2f}")
-            
+            st.subheader(f"📊 {token}")
+            st.dataframe(summary, use_container_width=True)            
 # === PHẦN 3: CHI TIẾT ĐẦU TƯ (ĐỂ CUỐI CÙNG) ===
 st.markdown("---")
 st.header("🏆 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
