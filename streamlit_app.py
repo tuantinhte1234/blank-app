@@ -4,7 +4,6 @@ import pandas as pd
 # Tải dữ liệu từ GitHub
 github_csv_url = "https://raw.githubusercontent.com/David-FPI/blank-app/main/vi.csv"
 df = pd.read_csv(github_csv_url)
-df.insert(0, "Số thứ tự", range(1, len(df) + 1))
 # Định dạng dữ liệu
 df["amountInvested"] = pd.to_numeric(df["amountInvested"], errors="coerce")
 df["tokensReceived"] = pd.to_numeric(df["tokensReceived"], errors="coerce")
@@ -26,6 +25,7 @@ st.markdown("""
 # Hiển thị toàn bộ dataset trước
 st.title("📈 Báo Cáo Wallet Address")
 st.subheader("📋 Dữ Liệu Giao Dịch")
+df.insert(0, "Số thứ tự", range(1, len(df) + 1))  # Chèn cột số thứ tự vào vị trí đầu
 st.dataframe(df, use_container_width=True)
 
 # === PHẦN 1: TỔNG QUAN ĐẦU TƯ ===
@@ -86,54 +86,13 @@ def search_transactions(df):
         # Đảm bảo bảng có đúng 9 hàng
         while len(summary) < 10:
             summary = pd.concat([summary, pd.DataFrame({"projectName": [""], "amountInvested": [""]})], ignore_index=True)
+        summary.insert(0, "Số thứ tự", range(1, len(summary) + 1))
         # Hiển thị bảng trong từng cột
         with col:
             st.subheader(f"{token}")
             st.dataframe(summary, use_container_width=True)
             st.markdown(f"**Tổng {token}:** ${total_amount:,.2f}")
-# #=== PHẦN 2: TÌM KIẾM GIAO DỊCH ===
-# def search_transactions(df):
-#     st.header("🔍 Tìm Kiếm Giao Dịch")
 
-#     selected_wallet = st.text_input("Nhập Địa Chỉ Ví:", "")
-
-#     if selected_wallet:
-#         df_filtered = df[df["walletAddress"].str.contains(selected_wallet, case=False, na=False)]
-#     else:
-#         df_filtered = df
-
-#     # Danh sách token cần hiển thị bảng riêng
-#     tokens = ["USDT", "ZUKIPOINT", "ZUKIVERSE"]
-
-#     # Chia giao diện thành 3 cột
-#     col1, col2, col3 = st.columns(3)
-    
-#     # Duyệt qua từng token và hiển thị trong từng cột
-#     for col, token in zip([col1, col2, col3], tokens):
-#         df_token = df_filtered[df_filtered["purchaseTokenSymbol"] == token]
-
-#         if not df_token.empty:
-#             # Nhóm dữ liệu theo projectName và tính tổng amountInvested
-#             summary = df_token.groupby("projectName")["amountInvested"].sum().reset_index()
-
-#             # Thêm ký hiệu "$"
-#             summary["amountInvested"] = summary["amountInvested"].apply(lambda x: f"${x:,.2f}")
-#         else:
-#             # Nếu không có dữ liệu, tạo bảng với 1 hàng thông báo
-#             summary = pd.DataFrame({"projectName": ["Không có giao dịch"], "amountInvested": ["-"]})
-
-#         # Đảm bảo bảng có đúng 9 hàng
-#         while len(summary) < 9:
-#             summary = pd.concat([summary, pd.DataFrame({"projectName": [""], "amountInvested": [""]})], ignore_index=True)
-
-#         # Thêm cột Số thứ tự (bắt đầu từ 1)
-#         summary.insert(0, "Số thứ tự", range(1, len(summary) + 1))
-
-#         # Hiển thị bảng trong từng cột
-#         with col:
-#             st.subheader(f"📊 {token}")
-#             st.dataframe(summary, use_container_width=True)            
-# === PHẦN 3: CHI TIẾT ĐẦU TƯ (ĐỂ CUỐI CÙNG) ===
 st.markdown("---")
 st.header("🏆 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
 
