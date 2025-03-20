@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # Tải dữ liệu từ GitHub
-github_csv_url = "https://github.com/tuantinhte1234/blank-app/blob/main/wallet_investments_2025-03-16(demodelete).csv"
+github_csv_url = "https://raw.githubusercontent.com/tuantinhte1234/blank-app/refs/heads/main/wallet_investments_2025-03-16(demodelete).csv"
 df = pd.read_csv(github_csv_url)
 # Định dạng dữ liệu
 df["amountInvested"] = pd.to_numeric(df["amountInvested"], errors="coerce")
