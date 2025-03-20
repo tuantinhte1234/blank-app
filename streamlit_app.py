@@ -105,7 +105,9 @@ def search_transactions(df):
             # Nếu không có dữ liệu, tạo bảng rỗng với thông báo
             summary = pd.DataFrame({"projectName": ["Không có giao dịch"], "amountInvested": ["-"]})
             total_amount = 0
-
+        # Đảm bảo bảng có đúng 9 hàng
+        while len(summary) < 9:
+            summary = pd.concat([summary, pd.DataFrame({"projectName": [""], "amountInvested": [""]})], ignore_index=True)
         # Hiển thị bảng trong từng cột
         with col:
             st.subheader(f"{token}")
