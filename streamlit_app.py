@@ -48,29 +48,61 @@ def display_overview(df):
     total_investment_usd = df["amountInvested"].sum()
     st.markdown(f"### 💵 **Tổng Số Đầu Tư Quy Đổi: ${total_investment_usd:,.2f}**", unsafe_allow_html=True)
 
+# #=== PHẦN 2: TÌM KIẾM GIAO DỊCH ===
+# def search_transactions(df):
+#     st.header("🔍 Tìm Kiếm Giao Dịch")
+    
+#     selected_wallet = st.text_input("Nhập Địa Chỉ Ví:", "")
+    
+#     if selected_wallet:
+#         df_filtered = df[df["walletAddress"].str.contains(selected_wallet, case=False, na=False)]
+#     else:
+#         df_filtered = df
+    
+#     col1, col2 = st.columns(2)
+    
+#     with col1:
+#         summary_by_token = df_filtered.groupby("purchaseTokenSymbol")["amountInvested"].sum().reset_index()
+#         st.subheader("📑 Tổng Hợp Số Tiền Đầu Tư Của Từng Token")
+#         st.dataframe(summary_by_token, use_container_width=True)
+    
+#     with col2:
+#         details_by_project = df_filtered.groupby(["purchaseTokenSymbol", "projectName"])["amountInvested"].sum().reset_index()
+#         st.subheader("📊 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
+#         st.dataframe(details_by_project, use_container_width=True)
 #=== PHẦN 2: TÌM KIẾM GIAO DỊCH ===
 def search_transactions(df):
     st.header("🔍 Tìm Kiếm Giao Dịch")
-    
+
     selected_wallet = st.text_input("Nhập Địa Chỉ Ví:", "")
-    
+
     if selected_wallet:
         df_filtered = df[df["walletAddress"].str.contains(selected_wallet, case=False, na=False)]
     else:
         df_filtered = df
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        summary_by_token = df_filtered.groupby("purchaseTokenSymbol")["amountInvested"].sum().reset_index()
-        st.subheader("📑 Tổng Hợp Số Tiền Đầu Tư Của Từng Token")
-        st.dataframe(summary_by_token, use_container_width=True)
-    
-    with col2:
-        details_by_project = df_filtered.groupby(["purchaseTokenSymbol", "projectName"])["amountInvested"].sum().reset_index()
-        st.subheader("📊 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
-        st.dataframe(details_by_project, use_container_width=True)
 
+    # Danh sách token cần hiển thị bảng riêng
+    tokens = ["USDT", "ZUKIPOINT", "ZUKIVERSE"]
+    
+    for token in tokens:
+        df_token = df_filtered[df_filtered["purchaseTokenSymbol"] == token]
+        
+        if not df_token.empty:
+            # Nhóm dữ liệu theo projectName và tính tổng amountInvested
+            summary = df_token.groupby("projectName")["amountInvested"].sum().reset_index()
+            
+            # Thêm ký hiệu "$"
+            summary["amountInvested"] = summary["amountInvested"].apply(lambda x: f"${x:,.2f}")
+
+            # Tính tổng số tiền đầu tư của token đó
+            total_amount = df_token["amountInvested"].sum()
+
+            # Hiển thị bảng
+            st.subheader(f"📊 Chi Tiết Đầu Tư: {token}")
+            st.dataframe(summary, use_container_width=True)
+
+            # Hiển thị tổng số tiền đầu tư
+            st.markdown(f"**Tổng {token}:** ${total_amount:,.2f}")
 
 # === PHẦN 3: CHI TIẾT ĐẦU TƯ (ĐỂ CUỐI CÙNG) ===
 st.markdown("---")
@@ -89,4 +121,4 @@ st.dataframe(detail_investment_summary, use_container_width=True)
 
 # === HIỂN THỊ CÁC PHẦN ===
 display_overview(df)
-search_transactions(df)
+#search_transactions(df)
