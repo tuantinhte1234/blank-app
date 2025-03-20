@@ -25,9 +25,9 @@ st.markdown("""
 # Hiển thị toàn bộ dataset trước
 st.title("📈 Báo Cáo Wallet Address")
 st.subheader("📋 Dữ Liệu Giao Dịch")
-df.insert(0, "STT", range(1, len(df) + 1))  # Chèn cột số thứ tự vào vị trí đầu
+df.index = range(1, len(df) + 1)
 #st.dataframe(df, use_container_width=True)
-st.dataframe(df, use_container_width=True, hide_index=True)
+st.dataframe(df, use_container_width=True)
 
 # === PHẦN 1: TỔNG QUAN ĐẦU TƯ ===
 def display_overview(df):
@@ -87,11 +87,12 @@ def search_transactions(df):
         # Đảm bảo bảng có đúng 9 hàng
         while len(summary) < 10:
             summary = pd.concat([summary, pd.DataFrame({"projectName": [""], "amountInvested": [""]})], ignore_index=True)
-        summary.insert(0, "STT", range(1, len(summary) + 1))
+        
+        summary.index = range(1, len(summary) + 1)
         # Hiển thị bảng trong từng cột
         with col:
             st.subheader(f"{token}")
-            st.dataframe(summary, use_container_width=True, hide_index=True)
+            st.dataframe(summary, use_container_width=True)
             st.markdown(f"**Tổng {token}:** ${total_amount:,.2f}")
 
 st.markdown("---")
