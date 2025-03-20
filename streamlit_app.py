@@ -108,7 +108,7 @@ def search_transactions(df):
 
         # Hiển thị bảng trong từng cột
         with col:
-            st.subheader(f"📊 {token}")
+            st.subheader(f"{token}")
             st.dataframe(summary, use_container_width=True)
             st.markdown(f"**Tổng {token}:** ${total_amount:,.2f}")
             
