@@ -37,11 +37,13 @@ def display_overview(df):
     
     with col1:
         total_investment_by_token = df.groupby("purchaseTokenSymbol")["amountInvested"].sum().reset_index()
+        total_investment_by_token.index = range(1, len(total_investment_by_token) + 1)
         st.subheader("💰 Tổng Số Đầu Tư Của Từng Token")
         st.dataframe(total_investment_by_token, use_container_width=True)
 
     with col2:
         total_tokens_by_project = df.groupby("projectName")["tokensReceived"].sum().reset_index()
+        total_tokens_by_project.index = range(1, len(total_tokens_by_project) + 1)  # Đặt index từ 1
         st.subheader("🪙 Tổng Số Token Đã Bán Của 21 Dự Án")
         st.dataframe(total_tokens_by_project, use_container_width=True)
     
