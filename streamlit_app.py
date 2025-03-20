@@ -4,7 +4,7 @@ import pandas as pd
 # Tải dữ liệu từ GitHub
 github_csv_url = "https://raw.githubusercontent.com/David-FPI/blank-app/main/vi.csv"
 df = pd.read_csv(github_csv_url)
-
+df.insert(0, "Số thứ tự", range(1, len(df) + 1))
 # Định dạng dữ liệu
 df["amountInvested"] = pd.to_numeric(df["amountInvested"], errors="coerce")
 df["tokensReceived"] = pd.to_numeric(df["tokensReceived"], errors="coerce")
