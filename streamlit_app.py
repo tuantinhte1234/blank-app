@@ -67,7 +67,7 @@ def search_transactions(df):
         st.dataframe(summary_by_token, use_container_width=True)
     
     with col2:
-        details_by_project = df_filtered.groupby(["purchaseTokenSymbol"])["amountInvested"].sum().reset_index()
+        details_by_project = df_filtered.groupby(["purchaseTokenSymbol", "projectName"])["amountInvested"].sum().reset_index()
         st.subheader("📊 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
         st.dataframe(details_by_project, use_container_width=True)
 
