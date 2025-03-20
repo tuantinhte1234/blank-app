@@ -101,13 +101,17 @@ def search_transactions(df):
 
             # Tính tổng số tiền đầu tư của token đó
             total_amount = df_token["amountInvested"].sum()
+        else:
+            # Nếu không có dữ liệu, tạo bảng rỗng với thông báo
+            summary = pd.DataFrame({"projectName": ["Không có giao dịch"], "amountInvested": ["-"]})
+            total_amount = 0
 
-            # Hiển thị bảng trong từng cột
-            with col:
-                st.subheader(f"📊 {token}")
-                st.dataframe(summary, use_container_width=True)
-                st.markdown(f"**Tổng {token}:** ${total_amount:,.2f}")
-
+        # Hiển thị bảng trong từng cột
+        with col:
+            st.subheader(f"📊 {token}")
+            st.dataframe(summary, use_container_width=True)
+            st.markdown(f"**Tổng {token}:** ${total_amount:,.2f}")
+            
 # === PHẦN 3: CHI TIẾT ĐẦU TƯ (ĐỂ CUỐI CÙNG) ===
 st.markdown("---")
 st.header("🏆 Chi Tiết Đầu Tư Của Từng Token Cho 21 Dự Án")
