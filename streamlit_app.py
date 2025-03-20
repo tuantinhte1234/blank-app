@@ -122,3 +122,4 @@ st.dataframe(detail_investment_summary, use_container_width=True)
 # === HIỂN THỊ CÁC PHẦN ===
 display_overview(df)
 #search_transactions(df)
+search_transactions(df)
