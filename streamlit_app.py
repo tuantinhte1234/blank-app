@@ -25,8 +25,9 @@ st.markdown("""
 # Hiển thị toàn bộ dataset trước
 st.title("📈 Báo Cáo Wallet Address")
 st.subheader("📋 Dữ Liệu Giao Dịch")
-df.insert(0, "Số thứ tự", range(1, len(df) + 1))  # Chèn cột số thứ tự vào vị trí đầu
-st.dataframe(df, use_container_width=True)
+df.insert(0, "STT", range(1, len(df) + 1))  # Chèn cột số thứ tự vào vị trí đầu
+#st.dataframe(df, use_container_width=True)
+st.dataframe(df, use_container_width=True, hide_index=True)
 
 # === PHẦN 1: TỔNG QUAN ĐẦU TƯ ===
 def display_overview(df):
