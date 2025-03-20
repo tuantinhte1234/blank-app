@@ -106,7 +106,7 @@ def search_transactions(df):
             summary = pd.DataFrame({"projectName": ["Không có giao dịch"], "amountInvested": ["-"]})
             total_amount = 0
         # Đảm bảo bảng có đúng 9 hàng
-        while len(summary) < 9:
+        while len(summary) < 10:
             summary = pd.concat([summary, pd.DataFrame({"projectName": [""], "amountInvested": [""]})], ignore_index=True)
         # Hiển thị bảng trong từng cột
         with col:
